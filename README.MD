@@ -1,11 +1,11 @@
 Install
 =======
 ```sh
-npm i taddy-pro/taddy-sdk
+npm i taddy-sdk
 ```
 Or
 ```sh
-yarn add taddy-pro/taddy-sdk
+yarn add taddy-sdk
 ```
 Simple usage
 ============
