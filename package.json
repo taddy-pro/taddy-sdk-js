@@ -1,0 +1,18 @@
+{
+  "name": "taddy-sdk",
+  "version": "0.1.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "files": [
+    "dist/**/*"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "@twa-dev/types": "^8.0.2",
+    "prettier": "^3.4.2",
+    "typescript": "^5.7.3"
+  }
+}
