@@ -10,11 +10,12 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "types": [
-      "@twa-dev/types"
+      "@types/telegram-web-app/index.d.ts"
     ]
   },
   "include": [
-    "src/**/*"
+    "src/**/*",
+    "node_modules/@types/telegram-web-app/index.d.ts"
   ],
   "exclude": [
     "node_modules",

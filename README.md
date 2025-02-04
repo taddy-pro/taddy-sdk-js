@@ -1,15 +1,5 @@
-Install
-=======
-```sh
-npm i taddy-sdk
-```
-Or
-```sh
-yarn add taddy-sdk
-```
 Simple usage
 ============
-
 ```ts
 // Import
 import { Taddy } from 'taddy-sdk';

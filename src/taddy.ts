@@ -1,4 +1,3 @@
-import { WebApp } from '@twa-dev/types';
 import { IGetTasksOptions, ITask, TEvent, THeaders, THttpMethod, TResponse } from './types';
 
 class Taddy {
