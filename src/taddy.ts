@@ -27,7 +27,7 @@ class Taddy {
   }
 
   tasks = (options?: IGetTasksOptions) =>
-    this.request<ITask[]>('POST', '/tasks', { pubId: this.pubId, user: this.user, ...options });
+    this.request<ITask[]>('POST', '/exchange/feed', { pubId: this.pubId, user: this.user, ...options });
 
   impressions(tasks: ITask[]): void {
     this.logEvent('impressions', { ids: tasks.map((t) => t.id), user: this.user });

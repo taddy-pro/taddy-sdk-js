@@ -12,19 +12,11 @@ export type TResponse = {
   code?: number;
 };
 
-export interface IMedia {
-  id: string;
-  url: string;
-  mime: string;
-  icon: string | null;
-  thumb: string | null;
-}
-
 export interface ITask {
   id: TIdentifier;
   title: string;
   description: string;
-  image: IMedia;
+  image: string;
   link: string;
 }
 
