@@ -1,26 +1,34 @@
 Simple usage
 ============
 ```ts
-// Import
+// Import Taddy SDK
 import { Taddy } from 'taddy-sdk';
 
 // Initialize SDK with your Public ID (pubId)
 const taddy = new Taddy('miniapp-xxxxxxxxxxxxxxxxxxxxxxxx')
 
-// Sending "ready" event when your app is ready to use
+// Send "ready" event when your app is ready to use
 taddy.ready();
 
-// Gettings tasks
+// Get tasks
 taddy.tasks({ limit: 4 }).then(tasks => {
-  // display tasks
+  // Display tasks
   display(tasks)
-  // Sending "impressions" event to roll stats
+  // Send "impressions" event to roll stats
   taddy.impressions(tasks);
 })
 
-// Or getting tasks with auto-impressions
+// Alternative way
 taddy.tasks({ limit: 4, autoImpressions: true }).then(tasks => {
-  // display tasks
+  // Display tasks
   display(tasks)
+})
+
+// Open task via Telegram WebApp API
+taddy.open(task).then(() => {
+  // Task completed! 
+  // Get reward, remove task from list, refresh tasks, etc...
+}).catch(err => {
+  // Something went wrong
 })
 ```

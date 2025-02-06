@@ -13,7 +13,7 @@ class Taddy {
     this.webApp = window.Telegram.WebApp;
     this.initData = this.webApp.initDataUnsafe;
     this.user = this.initData.user;
-    document.addEventListener('DOMContentLoaded', () => this.logEvent('dom-ready'), { once: true });
+    // document.addEventListener('DOMContentLoaded', () => this.logEvent('dom-ready'), { once: true });
   }
 
   logEvent(event: TEvent, payload: Record<string, any> = {}) {
@@ -22,7 +22,7 @@ class Taddy {
     this.request('POST', '/events', payload).catch((e) => this.debug && console.warn(e));
   }
 
-  ready() {
+  ready(): void {
     this.logEvent('ready', { user: this.user, start: this.initData.start_param });
   }
 
@@ -31,6 +31,32 @@ class Taddy {
 
   impressions(tasks: ITask[]): void {
     this.logEvent('impressions', { ids: tasks.map((t) => t.id), user: this.user });
+    // this.request('POST', '/exchange/impressions', {
+    //   pubId: this.pubId,
+    //   ids: tasks.map((t) => t.id),
+    //   user: this.user,
+    // }).catch(console.warn);
+  }
+
+  open(task: ITask): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.request<string>('POST', task.link)
+        .then((link) => {
+          window.Telegram.WebApp.openTelegramLink(link);
+          let counter = 0;
+          const check = () => {
+            this.request<boolean>('POST', '/exchange/check', { exchangeId: task.id, userId: this.user!.id }).then(
+              (completed) => {
+                if (completed) resolve();
+                else if (++counter < 100) setTimeout(check, 1000);
+                else reject('Check timed out');
+              },
+            );
+          };
+          setTimeout(check, 1000);
+        })
+        .catch(reject);
+    });
   }
 
   private request = <T>(
@@ -70,7 +96,9 @@ class Taddy {
 
       if (this.debug) console.log('Request', method, endpoint.split('?')[0], JSON.parse(JSON.stringify(payload)));
 
-      fetch(`https://tr.taddy.pro${endpoint}`, options)
+      const url = endpoint.startsWith('https') ? endpoint : `https://tr.taddy.pro${endpoint}`;
+
+      fetch(url, options)
         .then((response) => {
           response
             .json()
