@@ -101,7 +101,7 @@ class Taddy {
 
       if (this.debug) console.log('Request', method, endpoint.split('?')[0], JSON.parse(JSON.stringify(payload)));
 
-      const url = endpoint.startsWith('https') ? endpoint : `https://tr.taddy.pro${endpoint}`;
+      const url = endpoint.startsWith('https') ? endpoint : `https://t.tadly.pro/${endpoint}`;
 
       fetch(url, options)
         .then((response) => {
