@@ -1,24 +1,15 @@
 {
   "compilerOptions": {
-    "target": "ES6",
-    "module": "CommonJS",
+    "target": "es5",
+    "module": "esnext",
+    "lib": ["dom", "es6"],
     "declaration": true,
     "outDir": "./dist",
-    "rootDir": "./src",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "types": [
-      "@types/telegram-web-app/index.d.ts"
-    ]
+    "forceConsistentCasingInFileNames": true
   },
-  "include": [
-    "src/**/*",
-    "node_modules/@types/telegram-web-app/index.d.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "**/*.test.ts"
-  ]
+  "include": ["src"],
+  "exclude": ["node_modules"]
 }

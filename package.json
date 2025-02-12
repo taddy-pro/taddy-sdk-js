@@ -1,19 +1,31 @@
 {
   "name": "taddy-sdk",
+  "version": "0.1.10",
   "description": "Taddy Web SDK",
-  "version": "0.1.9",
-  "main": "dist/index.js",
+  "keywords": [
+    "taddy"
+  ],
+  "homepage": "https://github.com/taddy-pro/taddy-sdk-js#readme",
+  "bugs": {
+    "url": "https://github.com/taddy-pro/taddy-sdk-js/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/taddy-pro/taddy-sdk-js.git"
+  },
+  "license": "MIT",
+  "type": "commonjs",
+  "main": "dist/taddy.min.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc"
+    "build": "webpack",
+    "prepare": "npm run build"
   },
-  "files": [
-    "dist/**/*"
-  ],
-  "license": "MIT",
   "devDependencies": {
-    "prettier": "^3.4.2",
-    "typescript": "^5.7.3"
+    "ts-loader": "^9.5.2",
+    "typescript": "^5.7.3",
+    "webpack": "^5.97.1",
+    "webpack-cli": "^6.0.1"
   },
   "dependencies": {
     "@types/telegram-web-app": "^7.10.1"
