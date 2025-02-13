@@ -31,8 +31,10 @@ export class Taddy {
   private readonly user: WebApp['initDataUnsafe']['user'];
   private readonly pubId: string;
   private readonly debug: boolean;
+  private isReady: boolean = false;
 
   constructor(pubId: string, debug: boolean = false) {
+    if (!window.Telegram || !window.Telegram.WebApp) throw new Error('Taddy: Telegram WebApp script is not loaded.');
     this.pubId = pubId;
     this.debug = debug;
     this.webApp = window.Telegram.WebApp;
@@ -48,24 +50,25 @@ export class Taddy {
   }
 
   ready(): void {
-    this.logEvent('ready', { user: this.user, start: this.initData.start_param });
+    if (!this.isReady) {
+      this.logEvent('ready', { user: this.user, start: this.initData.start_param });
+      this.isReady = true;
+      console.warn('Taddy: ready() already called');
+    }
   }
 
-  tasks = (options?: IGetTasksOptions) =>
-    this.request<ITask[]>('POST', '/exchange/feed', {
+  tasks = (options?: IGetTasksOptions) => {
+    if (!this.isReady) throw new Error('Taddy: ready() not called');
+    return this.request<ITask[]>('POST', '/exchange/feed', {
       pubId: this.pubId,
       user: this.user,
       start: this.initData.start_param,
       ...options,
     });
+  };
 
   impressions(tasks: ITask[]): void {
     this.logEvent('impressions', { ids: tasks.map((t) => t.id), user: this.user });
-    // this.request('POST', '/exchange/impressions', {
-    //   pubId: this.pubId,
-    //   ids: tasks.map((t) => t.id),
-    //   user: this.user,
-    // }).catch(console.warn);
   }
 
   open(task: ITask): Promise<void> {
