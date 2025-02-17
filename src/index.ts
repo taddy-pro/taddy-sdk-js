@@ -53,8 +53,9 @@ export class Taddy {
     if (!this.isReady) {
       this.logEvent('ready', { user: this.user, start: this.initData.start_param });
       this.isReady = true;
-      console.warn('Taddy: ready() already called');
+      return;
     }
+    console.warn('Taddy: ready() already called');
   }
 
   tasks = (options?: IGetTasksOptions) => {
