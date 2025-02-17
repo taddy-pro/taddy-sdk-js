@@ -1,4 +1,6 @@
-export type TEvent = 'dom-ready' | 'ready' | string;
+export type TEvent = 'dom-ready' | 'ready' | TCustomEvent | string;
+
+export type TCustomEvent = 'custom1' | 'custom2' | 'custom3' | 'custom4';
 
 export type TIdentifier = number | string;
 
@@ -34,7 +36,7 @@ export class Taddy {
   private isReady: boolean = false;
 
   constructor(pubId: string, debug: boolean = false) {
-    if (!window.Telegram || !window.Telegram.WebApp) throw new Error('Taddy: Telegram WebApp script is not loaded.');
+    if (!window.Telegram || !window.Telegram.WebApp) throw new Error('Taddy: Telegram WebApp script is not loaded');
     this.pubId = pubId;
     this.debug = debug;
     this.webApp = window.Telegram.WebApp;
@@ -47,6 +49,10 @@ export class Taddy {
     payload = { ...payload, event, pubId: this.pubId };
     if (this.debug) console.info(`Sending "${event}" event`, payload);
     this.request('POST', '/events', payload).catch((e) => this.debug && console.warn(e));
+  }
+
+  customEvent(event: TCustomEvent, value: number | null = null) {
+    this.logEvent(event, { value });
   }
 
   ready(): void {
