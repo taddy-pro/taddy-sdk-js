@@ -1,3 +1,22 @@
+Include SDK
+===========
+npm
+```shell
+npm i taddy-sdk
+```
+yarn
+```shell
+yarn add taddy-sdk
+```
+or using CDN services
+```html
+<!-- jsdelivr.com -->
+<script src="https://cdn.jsdelivr.net/npm/taddy-sdk/dist/taddy.min.js"></script>
+
+<!-- unpkg.com -->
+<script src="https://unpkg.com/taddy-sdk/dist/taddy.min.js"></script>
+```
+
 Simple usage
 ============
 ```ts
