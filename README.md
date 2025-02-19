@@ -64,8 +64,8 @@ If user spent some system resources, let's also record that in the report by sen
 
 ```ts
 // Example: User completed the first level
-// Rollup custom1 with no value. 
-taddy.customEvent('custom1')
+// Rollup custom1 with no value (once)
+taddy.customEvent('custom1', { once: true })
 
 // Example: User attempted to pay
 // Rollup custom2 with no value. 
@@ -73,9 +73,9 @@ taddy.customEvent('custom2')
 
 // Example: User made a purchase for 5.99
 // Rollup custom3 with value 5.99
-taddy.customEvent('custom3', 5.99)
+taddy.customEvent('custom3', { value: 5.99 })
 
 // Example: user spent some system resources
-// Rollup custom4 with negative value -0.05
-taddy.customEvent('custom4', -0.05)
+// Rollup custom4 with negative value -0.05 and currency
+taddy.customEvent('custom4', { value: -0.05, currency: 'USD' })
 ```

@@ -45,14 +45,22 @@ export class Taddy {
     // document.addEventListener('DOMContentLoaded', () => this.logEvent('dom-ready'), { once: true });
   }
 
-  logEvent(event: TEvent, payload: Record<string, any> = {}) {
+  private logEvent(event: TEvent, payload: Record<string, any> = {}) {
     payload = { ...payload, event, pubId: this.pubId };
-    if (this.debug) console.info(`Sending "${event}" event`, payload);
-    this.request('POST', '/events', payload).catch((e) => this.debug && console.warn(e));
+    if (this.debug) console.info(`Taddy: Sending "${event}" event`, payload);
+    this.request('POST', '/events', payload).catch((e) => this.debug && console.warn('Taddy:', e));
   }
 
-  customEvent(event: TCustomEvent, value: number | null = null) {
-    this.logEvent(event, { value });
+  customEvent(event: TCustomEvent, options?: { value?: number | null; currency?: string; once?: boolean }) {
+    if (this.debug) console.info(`Taddy: Sending "${event}" event`, options);
+    this.request('POST', '/events/custom', {
+      pubId: this.pubId,
+      user: this.user!.id,
+      event,
+      value: options?.value,
+      currency: options?.currency,
+      once: options?.once,
+    }).catch((e) => this.debug && console.warn('Taddy:', e));
   }
 
   ready(): void {
@@ -108,7 +116,7 @@ export class Taddy {
     // @ts-ignore
     return new Promise((resolve, reject) => {
       const processReject = (error: string, code: number) => {
-        if (this.debug) console.error('Error', code, error);
+        if (this.debug) console.error('Taddy: Error', code, error);
         reject(error);
       };
 
@@ -134,7 +142,8 @@ export class Taddy {
         if (json !== '{}') endpoint += '?__payload=' + encodeURIComponent(json);
       }
 
-      if (this.debug) console.log('Request', method, endpoint.split('?')[0], JSON.parse(JSON.stringify(payload)));
+      if (this.debug)
+        console.log('Taddy: Request', method, endpoint.split('?')[0], JSON.parse(JSON.stringify(payload)));
 
       const url = endpoint.startsWith('https') ? endpoint : `https://t.tadly.pro${endpoint}`;
 
@@ -145,7 +154,7 @@ export class Taddy {
             .then((data: TResponse) => {
               if (data.error) processReject(data.error, response.status);
               else {
-                if (this.debug) console.info('Result', data.result);
+                if (this.debug) console.info('Taddy: Result', data.result);
                 resolve(data.result);
               }
             })
