@@ -43,13 +43,29 @@ taddy.tasks({ limit: 4, autoImpressions: true }).then(tasks => {
   display(tasks)
 })
 
-// Open task via Telegram WebApp API
+// Open task with auto-check
 taddy.open(task).then(() => {
   // Task completed! 
   // Get reward, remove task from list, refresh tasks, etc...
 }).catch(err => {
   // Something went wrong
 })
+
+// Open task without auto-check (second param is false)
+taddy.open(task, false).then(() => {
+  // Task opened (clicked)
+});
+
+// Check task completion
+taddy.check(task).then((completed) => {
+  if(completed) {
+    // Task completed! 
+    // Get reward, remove task from list, refresh tasks, etc...
+  } else {
+    // Task is not completed yet...
+  }
+});
+
 ```
 
 Custom events

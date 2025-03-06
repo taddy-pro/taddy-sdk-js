@@ -86,25 +86,31 @@ export class Taddy {
     this.logEvent('impressions', { ids: tasks.map((t) => t.id), user: this.user });
   }
 
-  open(task: ITask): Promise<void> {
+  open(task: ITask, autoCheck: boolean = true): Promise<void> {
     return new Promise((resolve, reject) => {
       this.request<string>('POST', task.link)
         .then((link) => {
           window.Telegram.WebApp.openTelegramLink(link);
-          let counter = 0;
-          const check = () => {
-            this.request<boolean>('POST', '/exchange/check', { exchangeId: task.id, userId: this.user!.id }).then(
-              (completed) => {
+          if (autoCheck) {
+            let counter = 0;
+            const check = () => {
+              this.check(task).then((completed) => {
                 if (completed) resolve();
                 else if (++counter < 100) setTimeout(check, 1000);
                 else reject('Check timed out');
-              },
-            );
-          };
-          setTimeout(check, 1000);
+              });
+            };
+            setTimeout(check, 1000);
+          } else {
+            resolve();
+          }
         })
         .catch(reject);
     });
+  }
+
+  check(task: ITask): Promise<boolean> {
+    return this.request<boolean>('POST', '/exchange/check', { exchangeId: task.id, userId: this.user!.id });
   }
 
   private request = <T>(
